@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+	</head>
+
+	<body>
+		<div class="fix-box">
+			<div class="w1190">
+				<dl>
+					<dt>便民服务</dt>
+					<dd>
+						<a data-type="1" class="details-a-click">美容店家</a>
+					</dd>
+					<dd>
+						<a data-type="2" class="details-a-click">装修服务</a>
+					</dd>
+					<dd>
+						<a data-type="3" class="details-a-click">广告制作</a>
+					</dd>
+					<dd>
+						<a data-type="4" class="details-a-click">包材包装</a>
+					</dd>
+					<dd>
+						<a data-type="5" class="details-a-click">代加工</a>
+					</dd>
+				</dl>
+			</div>
+		</div>
+
+		<div id="wp"></div>
+	</body>
+	<script id="tpl" type="text/html">
+		<%var IMAGE_URL = '/view/data/details.html';%>
+		<table class="table">
+			<%for (var i = 0; i < data.length; i++) {%>
+			<tr class="active">
+				<td class="col-sm-3">
+					<span><a href="<%:=IMAGE_URL%>?d=<%:=data[i].id%>"><%:=data[i].company_name%></a></span>
+					<img src="<%:=data[i].image_url%>" width="160px" height="120px" />
+				</td>
+				<td colspan="8">
+					<span>所在地：<%:=data[i].company_adress%></span>
+					<span>主要产品：<%:=data[i].company_product%></span>
+					<span>经营范围：<%:=data[i].company_industry%></span>
+				</td>
+			</tr>
+			<%}%>
+		</table>
+		<hr />
+	</script>
+
+</html>

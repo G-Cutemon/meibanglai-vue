@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>Document</title>
+</head>
+<body>
+	<div class="fix-box">
+		<div class="w1190">
+			<dl>
+				<dt>门店转让</dt>
+				<dd>
+					<a data-type="1" class="details-a-click">美业转让</a>
+				</dd>
+				<dd>
+					<a data-type="2" class="details-a-click">其他转让</a>
+				</dd>
+			</dl>
+		</div>
+	</div>
+	
+	<div id="wp"></div>
+</body>
+<script id="tpl" type="text/html">
+	<%var DETAIL_PREFIX = '/view/data/shoptransfer.html';%>
+	<%var DEFAULT_IMAGE_URI = '//meibanglai.com/image/shoptransfer/';%>
+	<table class="table">
+		<tr class="warning">
+			<th class="col-lg-2 visible-lg">门店外观</th>
+			<th class="col-xs-6 col-lg-4">转让信息</th>
+			<th class="col-xs-4">转让费用</th>
+			<th class="visible-lg">门店地址</th>
+			<th></th>
+		</tr>
+		<%for (var i = 0; i < data.length; i++) {%>
+		<tr class="active">
+			<td class="visible-lg">
+				<img src="<%:=DEFAULT_IMAGE_URI%><%:=data[i].image_url.split(";")[0]%>" style="width: 171px; height: 128px;"/>
+			</td>
+			<td>
+				<span>
+					<%:=data[i].transfer_name%>
+				</span>
+				<span>
+					<%:=data[i].address%>
+				</span>
+			</td>
+			<td>
+				<span>
+					租金：<%:=data[i].rental%>
+				</span>
+				<span>
+					转让费：<%:=data[i].transfer_gold%>
+				</span>
+			</td>
+			<td class="visible-lg">
+				<%:=data[i].type%>
+			</td>
+			<td>
+				<button class="btn btn-primary" onclick="window.location.href='<%:=DETAIL_PREFIX%>?d=<%:=data[i].id%>'">查看详情</button>
+			</td>
+			<%}%>
+		</tr>
+	</table>
+	<hr>
+</script>
+</html>
