@@ -1,51 +1,54 @@
 <template>
-    <div  id="brand-list" class="list">
-        <div class="sort">
-            <ul class="clearfix">
-                <li class="fl one">
-                    <img src="<%:=LOGO_URL%><%:=data[i].brand_logo%>" />
-                </li>
+    <div id="brand-list">
+        <div class="list" v-for="(item, index) in dataList" :key="index">
+            <div class="sort">
+                <ul class="clearfix">
+                    <li class="fl one">
+                        <img :src="LOGO_URL + item.brand_logo" />
+                    </li>
 
-                <li class="fl two">
-                    <p style="font-weight: bold;font-size: 1rem;">公司名：
-                        <!-- <%:=data[i].campany_name%> -->
-                    </p>
-                    <p>参展产品：
-                        <!-- <%:=data[i].product_name%> -->
-                    </p>
-                    <!--<p class="show_box1-context_product">产品介绍：
-                                <%:=data[i].product%>
-                            </p>-->
-                    <p>品牌官网：
-                        <!-- <%:=data[i].website%> -->
-                    </p>
-                </li>
-                <li class="fl three">
-                    <a href="#">联系方式</a>
-                </li>
-            </ul>
+                    <li class="fl two">
+                        <p style="font-weight: bold;font-size: 1rem;">公司名：
+                            {{item.campany_name}}
+                        </p>
+                        <p>参展产品：
+                            {{item.product_name}}
+                        </p>
+                        <p>品牌官网：
+                            {{item.website}}
+                        </p>
+                    </li>
+                    <li class="fl three">
+                        <a href="#">联系方式</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-    new Vue({
-        el: '#brand-list',
-        data: {
-
-        },
-        methods: {
-            getData: function(){
-                this.$http.get('//meibanglai.com/data/getInformationList.do', {
-                    params:{
-                        "category":category,
-                        "type":type,
-                        "num":num
-                    }
-                })
+    export default{
+        data() {
+            return {
+                LOGO_URL: '//meibanglai.com/image/mbhbrand/'
             }
         },
-    })
+        props: ["dataList"],
+        methods: {
+            showData(){
+                console.log(this.dataList)
+            }
+        },
+        created: function(){
+            // let category = this.$route.query.category,
+            //     type = this.$route.query.type || 1,
+            //     num = this.$route.query.num || 1
+            // console.log(category, type, num)
+            this.$emit('getUrlParams')
+            this.$emit('getData')
+        },
+    }
 </script>
 
 <style>

@@ -317,6 +317,10 @@ li,p,ul {
 	border: 0!important;
 }
 
+#brand-list {
+    margin-top: 60px
+}
+
 /* 自定义设置结束 */
 
 /* 整合的自定义设置 */
