@@ -2,7 +2,7 @@
 <div>
     <Header></Header>
 
-    <button @click="getUrlParams">获取地址栏参数</button>
+    <!-- <button @click="getUrlParams">获取地址栏参数</button> -->
 
     <router-view @getUrlParams="getUrlParams" @getData="getData" :dataList="dataList"></router-view>
 
@@ -23,7 +23,7 @@ export default {
         return {
             category: this.$route.query.category,
             type: this.$route.query.type || 1,
-            num: this.$route.query.num || 1,
+            // num: this.$route.query.num || 1,
             dataList: '',
             hasData: false,
             totalPage: 100,
@@ -35,27 +35,34 @@ export default {
         Footer,
         Pagination
     },
+    watch: {
+        '$route': ['getUrlParams', 'getData']
+    },
     methods: {
         getUrlParams(){
             this.category = this.$route.query.category,
             this.type = this.$route.query.type || 1,
-            this.num = this.$route.query.num || 1
-            console.log(this.category, this.type, this.num)
+            this.currentPage = parseInt(this.$route.query.num) || 1
         },
-        getData(category = this.category, type = this.type, num = this.num){
+        getData(){
             let _this = this,
                 DATALIST_URL = "//meibanglai.com/data/dataList.do"
             this.hasData = true
+            console.log(_this.category, _this.type, _this.currentPage)
             this.$http.get(DATALIST_URL, {
                 params:{
-                    "category":category,
-                    "type":type,
-                    "num":num
+                    "category": _this.category,
+                    "type": _this.type,
+                    "num": _this.currentPage
                 }
             })
             .then(function(response) {
-                console.log(response);
-                _this.dataList = response.data.data
+                // console.log(response.data);
+                if(response.data.code == 200){
+                    _this.dataList = response.data.data
+                    _this.totalPage = response.data.totalPage
+                }
+                
                 console.log(_this.dataList);
             })
             .catch(function(error) {
@@ -69,7 +76,8 @@ export default {
             
             this.currentPage = cPage
             // this.getUrlParams()
-            this.getData(this.category, this.type, cPage)
+            this.getData()
+            // this.currentPage = 1
         }
     },
     created: function(){

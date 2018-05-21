@@ -81,7 +81,7 @@
 }
 
 @media (max-width: 1190px) { 
-	.navbar { width: 1190px; position: fixed;}	
+	.navbar { width: 1190px; position: relative;}	
 }
 
 @media (min-width: 768px) {

@@ -8,7 +8,7 @@
 					</li>
 					<li class="fl two">
 						<p class="f-rem-017">名称：
-							<a href="DETAILS_URL + item.id" class="f-w">{{ item.school_name }}</a>
+							<a :href="DETAILS_URL + '?d=' + item.id" class="f-w">{{ item.school_name }}</a>
 						</p>
 						<p>学校性质：{{ item.school_type }}</p>
 						<p>培训科目：{{ item.school_course }}</p>
@@ -41,8 +41,9 @@
             }
         },
         created: function(){
-            this.$emit('getUrlParams')
-            this.$emit('getData')
+            if(!this.dataList){
+                this.$emit('getData')
+            }
         },
     }
 </script>

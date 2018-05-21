@@ -61,10 +61,13 @@ export default {
 	data(){
 		return {
             goToPage: '',
-			myCurrentPage : parseInt(this.$route.query.num) || 1,
+			myCurrentPage : this.currentPage || 1,
             isPageNumberError: false
 		}
-	},
+    },
+    watch: {
+        '$route': ['getPage']
+    },
 	computed:{
 		// prop不应该在组件内部做改变
 		// 所以我们这里设置一个内部计算属性myCurrentPage来代替props中的getCurrentPage
@@ -74,13 +77,16 @@ export default {
 		}
 	},
 	methods:{
+        getPage(){
+            this.myCurrentPage = this.currentPage || 1
+        },
 		//turnToPage为跳转到某页
 		//传入参数pageNum为要跳转的页数
 		turnToPage( pageNum ){
             
 			var ts = this;
             var pageNum = parseInt(pageNum);
-            console.log(pageNum)
+            // console.log(pageNum)
 			//页数不合法则退出
 			if (!pageNum || pageNum > ts.totalPage || pageNum < 1) {
 				console.log('页码输入有误！');

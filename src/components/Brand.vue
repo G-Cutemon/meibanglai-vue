@@ -45,8 +45,9 @@
             //     type = this.$route.query.type || 1,
             //     num = this.$route.query.num || 1
             // console.log(category, type, num)
-            this.$emit('getUrlParams')
-            this.$emit('getData')
+            if(!this.dataList){
+                this.$emit('getData')
+            }
         },
     }
 </script>
