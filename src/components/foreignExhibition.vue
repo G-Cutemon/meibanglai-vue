@@ -1,27 +1,27 @@
 <template>
-    <div id="exhibition-list">
+    <div id="foreignExhibition-list">
         <div class="content" v-for="(item, index) in dataList" :key="index">
-            <div class="Exhibition_main clearfix">
+			<div class="Exhibition_main clearfix">
                 <ul class="list_a fl">
                     <li class="f-w f-rem-017">
-                        <a href='javascript:'>
-                            {{ item.company_name }}
+                        <a :href="DETAILS_URL + '?d=' + item.id">
+                            {{ item.meeting_name }}
                         </a>
                     </li>
                     <li>地址：
-                        {{ item.address }}
+                        {{ item.meeting_adress }}
                     </li>
-                    <li>邮箱：
-                        {{ item.email }}
+                    <li>举办：
+                        {{ item.organizer }}
                     </li>
-                    <li>日期：
-                        {{ item.time }}
+                    <li>
+                        {{ item.meeting_time }}
                     </li>
                 </ul>
                 <ul class="list_c fr w-20 text-c">
                     <li>
-                        <a href="javascript:">
-                            {{ item.area + item.site }}
+                        <a :href="DETAILS_URL + '?d=' + item.id">
+                            {{ item.meeting_area }}
                         </a>
                     </li>
                 </ul>

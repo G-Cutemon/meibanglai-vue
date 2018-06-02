@@ -5,14 +5,16 @@ import App from './App'
 import router from './router'
 import $ from 'jquery'
 import axios from 'axios'
+import qs from 'qs';
 import 'static/css/default.css'
 import 'bootstrap/css/bootstrap.min.css'
 import 'bootstrap/js/bootstrap.min.js'
 import 'static/css/header.css'
 import 'static/css/footer.css'
 
-
-Vue.prototype.$http= axios
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+Vue.prototype.$axios = axios
+Vue.prototype.$qs = qs
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

@@ -76,10 +76,10 @@
 </template>
 
 <script>
-	import 'static/css/index.css';
-	import 'static/css/swipeslider.css';
-	import 'static/js/public/swipeslider.js';
-	import 'static/js/index.js';
+	import 'static/css/index.css'
+	import 'static/css/swipeslider.css'
+	import 'static/js/public/swipeslider.js'
+	import 'static/js/index.js'
 	export default {
 
 	}

@@ -35,16 +35,6 @@
             }
         },
         props: ["dataList"],
-        methods: {
-            showData(){
-                console.log(this.dataList)
-            }
-        },
-        created: function(){
-            if(!this.dataList){
-                this.$emit('getData')
-            }
-        },
     }
 </script>
 

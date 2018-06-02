@@ -4,7 +4,7 @@
 
     <!-- <button @click="getUrlParams">获取地址栏参数</button> -->
 
-    <router-view @getUrlParams="getUrlParams" @getData="getData" :dataList="dataList"></router-view>
+    <router-view @getUrlParams="getUrlParams" @clearData="clearData" @getData="getData" @getLogistics="getLogistics" @paginationCallback="paginationCallback" :dataList="dataList" :hasData="hasData"></router-view>
 
     <pagination v-if="hasData" :totalPage="totalPage" :currentPage="currentPage" :changeCallback="paginationCallback"></pagination>
 
@@ -24,10 +24,14 @@ export default {
             category: this.$route.query.category,
             type: this.$route.query.type || 1,
             // num: this.$route.query.num || 1,
+            url: "//meibanglai.com/data/dataList.do",
             dataList: '',
             hasData: false,
             totalPage: 100,
-            currentPage: parseInt(this.$route.query.num) || 1
+            currentPage: parseInt(this.$route.query.num) || 1,
+            start: "",
+            end: "",
+            isClick: "0",
         }
     },
     components: {
@@ -36,7 +40,7 @@ export default {
         Pagination
     },
     watch: {
-        '$route': ['getUrlParams', 'getData']
+        '$route': ['clearData', 'getUrlParams', 'getData'],
     },
     methods: {
         getUrlParams(){
@@ -44,36 +48,96 @@ export default {
             this.type = this.$route.query.type || 1,
             this.currentPage = parseInt(this.$route.query.num) || 1
         },
-        getData(){
+        clearData(){
+            this.hasData = false
+            this.isClick = "0"
+        },
+        getData(now){
+            if(this.category == 4){
+                    this.url = "//meibanglai.com/data/getInformationList.do"
+                } else if(this.category == 7){
+                    // console.log(this.isClick)
+                    if(this.isClick != 1){
+                        return
+                    }
+                    this.url = "//meibanglai.com/data/dataListLogistics.do"
+                    let _this = this,
+                        url = this.url,
+                        postData = this.$qs.stringify({
+                            start: _this.start,
+                            end: _this.end,
+                            num: _this.currentPage
+                        })
+                    console.log(_this.category, _this.type, _this.currentPage)
+                    this.$axios({
+                        method: 'post',
+                        url: url,
+                        data:postData
+                    })
+                    .then(function(response) {
+                        // console.log(response.data);
+                        if(response.data.code == 200){
+                            $("html,body").animate({
+                                scrollTop: 0
+                            }, 500)
+                            _this.dataList = response.data.data
+                            _this.totalPage = response.data.totalPage
+                            _this.hasData = true
+                        } else {
+                            return alert('输入错误或没有查询到信息')
+                        }
+                        
+                        console.log(_this.dataList);
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    })
+                    return
+                } else {
+                    this.url = "//meibanglai.com/data/dataList.do"
+                }
             let _this = this,
-                DATALIST_URL = "//meibanglai.com/data/dataList.do"
-            this.hasData = true
-            console.log(_this.category, _this.type, _this.currentPage)
-            this.$http.get(DATALIST_URL, {
-                params:{
-                    "category": _this.category,
-                    "type": _this.type,
-                    "num": _this.currentPage
-                }
-            })
-            .then(function(response) {
-                // console.log(response.data);
-                if(response.data.code == 200){
-                    _this.dataList = response.data.data
-                    _this.totalPage = response.data.totalPage
-                }
-                
-                console.log(_this.dataList);
-            })
-            .catch(function(error) {
-                console.log(error);
-            })
+                url = this.url
+            if(_this.category){
+                console.log(_this.category, _this.type, _this.currentPage)
+                this.$axios.get(url, {
+                    params:{
+                        "category": _this.category,
+                        "type": _this.type,
+                        "num": _this.currentPage
+                    }
+                })
+                .then(function(response) {
+                    // console.log(response.data);
+                    if(response.data.code == 200){
+                        $("html,body").animate({
+                            scrollTop: 0
+                        }, 500)
+                        _this.dataList = response.data.data
+                        _this.totalPage = response.data.totalPage
+                        _this.hasData = true
+                    }
+                    
+                    console.log(_this.dataList);
+                })
+                .catch(function(error) {
+                    console.log(error);
+                })
+            }
+        },
+        getLogistics(start, end, isClick){
+            this.isClick = isClick
+            this.start = start
+            this.end = end
         },
         // pagination的回调函数，参数cPage是跳转后的页码
         paginationCallback(cPage){
-            history.pushState(null, null, "?category=" + this.category + "&type=" + this.type + "&num=" + cPage)
+            if(this.category == 7){
+                history.pushState(null, null, "?category=" + this.category + "&type=" + this.type + "&num=" + cPage + "?start=" + this.start + "&end=" + this.end)
+            } else {
+                history.pushState(null, null, "?category=" + this.category + "&type=" + this.type + "&num=" + cPage)
+            }
             history.pushState(null, null, document.URL)
-            
             this.currentPage = cPage
             // this.getUrlParams()
             this.getData()
@@ -84,6 +148,7 @@ export default {
         window.addEventListener('popstate', function () {
             history.pushState(null, null, document.URL);
         })
+        this.getData()
     },
     mounted: function () {
         if ($(window).width() > 768) {

@@ -2,7 +2,7 @@
     <div class="exhibition-list">
         <div class="content" v-for="(item, index) in dataList" :key="index">
 			<div class="Exhibition_main clearfix">
-				<ul class="fl ">
+				<ul class="list_a fl">
 					<li class="f-rem-017 p-4 f-w">
 						<a :href="DETAILS_URL + '?d=' + item.id">{{ item.meeting_name }}</a>
 					</li>
@@ -29,16 +29,6 @@
             }
         },
         props: ["dataList"],
-        methods: {
-            showData(){
-                console.log(this.dataList)
-            }
-        },
-        created: function(){
-            if(!this.dataList){
-                this.$emit('getData')
-            }
-        },
     }
 </script>
 

@@ -294,11 +294,11 @@
 											role="separator":声明这个元素为一个分隔线-->
                                 <li role="separator" class="divider"></li>
                                 <li>
-                                    <router-link to="/exhibition?category=3&type=2">国际展会</router-link>
+                                    <router-link to="/foreignExhibition?category=3&type=2">国际展会</router-link>
                                 </li>
                                 <li role="separator" class="divider"></li>
                                 <li>
-                                    <router-link to="/exhibition?category=3&type=3">美博会参展商名录</router-link>
+                                    <router-link to="/exhibitor?category=3&type=3">美博会参展商名录</router-link>
                                 </li>
 
                             </ul>

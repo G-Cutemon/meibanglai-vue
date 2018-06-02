@@ -46,7 +46,7 @@
             //     num = this.$route.query.num || 1
             // console.log(category, type, num)
             if(!this.dataList){
-                this.$emit('getData')
+                // this.$emit('getData')
             }
         },
     }
