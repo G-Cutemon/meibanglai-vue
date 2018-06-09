@@ -77,7 +77,7 @@
                     <li>联系电话： {{ item.contact_mobile }}</li>
                     <li>座机：{{ item.contact_tellphone }}</li>
                     <li>{{ item.product_name }}</li>
-                    <li>供{{ item.product_describe }}</li>
+                    <li>{{ item.product_describe }}</li>
                 </ul>
                 <ul class="col-xs-3 col-sm-2 col-md-2 p-0 text-center m-t-2">
                     <li>

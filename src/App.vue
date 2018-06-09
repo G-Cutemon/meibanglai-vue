@@ -31,6 +31,8 @@ export default {
             currentPage: parseInt(this.$route.query.num) || 1,
             start: "",
             end: "",
+            county: "",
+            town: "",
             isClick: "0",
         }
     },
@@ -60,38 +62,74 @@ export default {
                     if(this.isClick != 1){
                         return
                     }
-                    this.url = "//meibanglai.com/data/dataListLogistics.do"
-                    let _this = this,
-                        url = this.url,
-                        postData = this.$qs.stringify({
-                            start: _this.start,
-                            end: _this.end,
-                            num: _this.currentPage
+                    if(this.type == 1){
+                        this.url = "//meibanglai.com/data/dataListLogistics.do"
+                        let _this = this,
+                            url = this.url,
+                            postData = this.$qs.stringify({
+                                start: _this.start,
+                                end: _this.end,
+                                num: _this.currentPage
+                            })
+                        console.log(_this.category, _this.type, _this.currentPage)
+                        this.$axios({
+                            method: 'post',
+                            url: url,
+                            data:postData
                         })
-                    console.log(_this.category, _this.type, _this.currentPage)
-                    this.$axios({
-                        method: 'post',
-                        url: url,
-                        data:postData
-                    })
-                    .then(function(response) {
-                        // console.log(response.data);
-                        if(response.data.code == 200){
-                            $("html,body").animate({
-                                scrollTop: 0
-                            }, 500)
-                            _this.dataList = response.data.data
-                            _this.totalPage = response.data.totalPage
-                            _this.hasData = true
-                        } else {
-                            return alert('输入错误或没有查询到信息')
-                        }
-                        
-                        console.log(_this.dataList);
-                    })
-                    .catch(function(error) {
-                        console.log(error);
-                    })
+                        .then(function(response) {
+                            // console.log(response.data);
+                            if(response.data.code == 200){
+                                $("html,body").animate({
+                                    scrollTop: 0
+                                }, 500)
+                                _this.dataList = response.data.data
+                                _this.totalPage = response.data.totalPage
+                                _this.hasData = true
+                            } else {
+                                return alert('输入错误或没有查询到信息')
+                            }
+                            
+                            console.log(_this.dataList);
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        })
+                    } else if(this.type == 3){
+                        this.url = "//meibanglai.com/data/dataListExpressage.do"
+                        let _this = this,
+                            url = this.url,
+                            postData = this.$qs.stringify({
+                                county: _this.county,
+                                town: _this.town,
+                                num: _this.currentPage
+                            })
+                        console.log(_this.county, _this.town, _this.currentPage)
+                        this.$axios({
+                            method: 'post',
+                            url: url,
+                            data:postData
+                        })
+                        .then(function(response) {
+                            // console.log(response.data);
+                            if(response.data.code == 200){
+                                $("html,body").animate({
+                                    scrollTop: 0
+                                }, 500)
+                                _this.dataList = response.data.data
+                                _this.totalPage = response.data.totalPage
+                                _this.hasData = true
+                            } else {
+                                return alert('输入错误或没有查询到信息')
+                            }
+                            
+                            console.log(_this.dataList);
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        })
+                    }
+                    
                     return
                 } else {
                     this.url = "//meibanglai.com/data/dataList.do"
@@ -125,10 +163,16 @@ export default {
                 })
             }
         },
-        getLogistics(start, end, isClick){
-            this.isClick = isClick
-            this.start = start
-            this.end = end
+        getLogistics(postData1, postData2, isClick){
+            if(this.type == 1){
+                this.isClick = isClick
+                this.start = postData1
+                this.end = postData2
+            } else if(this.type == 3){
+                this.isClick = isClick
+                this.county = postData1
+                this.town = postData2
+            }
         },
         // pagination的回调函数，参数cPage是跳转后的页码
         paginationCallback(cPage){

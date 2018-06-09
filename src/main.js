@@ -5,7 +5,8 @@ import App from './App'
 import router from './router'
 import $ from 'jquery'
 import axios from 'axios'
-import qs from 'qs';
+import qs from 'qs'
+import Distpicker from 'v-distpicker'
 import 'static/css/default.css'
 import 'bootstrap/css/bootstrap.min.css'
 import 'bootstrap/js/bootstrap.min.js'
@@ -15,7 +16,7 @@ import 'static/css/footer.css'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 Vue.prototype.$axios = axios
 Vue.prototype.$qs = qs
-Vue.config.productionTip = false
+Vue.component('v-distpicker', Distpicker)
 
 /* eslint-disable no-new */
 new Vue({

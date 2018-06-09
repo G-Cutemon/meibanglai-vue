@@ -13,7 +13,7 @@
                             <div class="input-wrap">
                                 <input type="text" placeholder="输入收件人地址" v-model="end">
                             </div>
-                            <button class="wl-btn search-btn ss-btn wl-btn-768 btn btn-info" @click="doSearch">搜索</button>
+                            <button class="wl-btn search-btn ss-btn wl-btn-768 btn btn-info" @click="doSearch1">搜索</button>
                         </div>
                 </div>
             </div>
@@ -42,7 +42,7 @@
             </div>
         
 
-            <div class="select-area text-c" v-if="!$route.query.type || $route.query.type === '2'">
+            <div class="select-area text-c" v-else-if="$route.query.type === '2'">
                 <div class="area">
                     <hr />
                     <select id="com" class="h-45">
@@ -58,19 +58,16 @@
                         <option value="zhaijisong">宅急送</option>
                     </select>
                     <input type="text" id="num" placeholder="请输入快递单号" class="h-45 w-22"/>
-                    <button type="button" id="search" class="btn btn-info h-45 w-10">搜索</button>
+                    <button type="button" class="btn btn-info h-45 w-10">搜索</button>
                     <span class="hidden-xs" style="display:none">如果没有找到想要的快递 可以试试自动~</span>
                 </div>
             </div>
 
-            <div class="select-area text-c" v-if="!$route.query.type || $route.query.type === '3'">
+            <div class="select-area text-c" v-else-if="$route.query.type === '3'">
                 <div class="area">
                     <hr />
-                    <select id="s_province" name="s_province" class="h-45 w-w100"></select>
-                    <select id="s_city" name="s_city" class="h-45 w-w100"></select>
-                    <select id="s_county" name="s_county" class="h-45 w-w100"></select>
-                    <input type="text" id="s_town" placeholder="乡/镇  如:玉溪镇" class="h-45 w-w100"/>
-                    <button class="btn btn-primary h-45 w-10 w-w100" id="search">搜索</button>
+                    <v-distpicker :placeholders="placeholders" @province="getProvince" @city="getCity" @area="getArea"></v-distpicker>
+                    <button class="btn btn-primary h-45 w-10 w-w100" @click="doSearch3">搜索</button>
                 </div>
             </div>
         </div>
@@ -78,8 +75,7 @@
 </template>
 
 <script>
-    import 'static/js/public/area.js'
-    import 'static/js/data/queryExpressage.js'
+    import VDistpicker from 'v-distpicker'
     export default{
         data() {
             return {
@@ -89,15 +85,28 @@
                 currentPage: parseInt(this.$route.query.num) || 1,
                 start: "",
                 end: "",
-                searchHasData: this.hasData
+                searchHasData: this.hasData,
+                placeholders: {
+                    province: '------- 省 --------',
+                    city: '--- 市 ---',
+                    area: '--- 区 ---',
+                },
+                picker: {
+                    province: '',
+                    city: '',
+                    area: '',
+                }
             }
+        },
+        components: {
+            VDistpicker
         },
         props: ["dataList","hasData"],
         watch: {
             // '$route': ['doSearch']
         },
         methods: {
-            doSearch(){
+            doSearch1(){
                 this.$emit('clearData')
                 this.$emit('getLogistics', this.start, this.end, "1")
                 this.$emit('getUrlParams')
@@ -107,6 +116,21 @@
                     history.pushState(null, null, document.URL)
                 }
             },
+            doSearch3(){
+                console.log(this.placeholders)
+            },
+            getProvince(data){
+                console.log(data)
+                this.picker.province = data.value
+            },
+            getCity(data){
+                console.log(data)
+                this.picker.city = data.value
+            },
+            getArea(data){
+                console.log(data)
+                this.picker.area = data.value
+            },
             formatDate(n) {
                 // 获取时分秒
                 let now = new Date(),
@@ -115,7 +139,7 @@
                     date = now.getDate(),
                     hours = now.getHours(),
                     minutes = now.getMinutes(),
-                    seconds = now.getSeconds(),
+                    seconds = now.getSeconds(), 
                     timestamp = now.getTime();
 
                 // 小于10数字补0
